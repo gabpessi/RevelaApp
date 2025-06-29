@@ -53,5 +53,5 @@ export const getMessageImageUrl = (imagePath) => {
   if (imagePath.startsWith('http')) return imagePath;
   
   // constrói a URL completa para imagens do backend
-  return `https://backend-796l.onrender.com${imagePath}`;
+  return `https://backend-796l.onrender.com/${imagePath}`;
 }; 
