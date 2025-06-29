@@ -43,4 +43,15 @@ export const getImageUrl = (imagePath) => {
   
   // constrói a URL completa
   return `${API_CONFIG.baseURL}${imagePath}`;
+};
+
+// Função específica para imagens de mensagens
+export const getMessageImageUrl = (imagePath) => {
+  if (!imagePath) return null;
+  
+  // se já é uma URL completa retorna como ta
+  if (imagePath.startsWith('http')) return imagePath;
+  
+  // constrói a URL completa para imagens do backend
+  return `https://backend-796l.onrender.com${imagePath}`;
 }; 

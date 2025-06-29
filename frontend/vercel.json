@@ -12,5 +12,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "description": "Frontend Revela - Forçando novo deploy"
+  "description": "Frontend Revela"
 } 
