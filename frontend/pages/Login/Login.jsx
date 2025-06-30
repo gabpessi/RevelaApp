@@ -77,6 +77,7 @@ export default function Login() {
                     className={`${styles.input} ${hasError ? styles.inputError : ''}`}
                 />
                 <Button type="submit" disabled={isLoading}>
+                style={isLoading ? { opacity: 0.6, cursor: "not-allowed", backgroundColor: "#b8b8b8" } : {}}
                     {isLoading ? (
                         <div className={styles.spinnerContainer}>
                             <div className={styles.spinner}></div>
