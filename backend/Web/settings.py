@@ -66,11 +66,12 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
        "https://revelaweb.vercel.app",
-       
+       "https://desenvolvimento-web-git-be04cb-vitorandradeschweitzers-projects.vercel.app"
    ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://revelaweb.vercel.app",
+    "https://desenvolvimento-web-git-be04cb-vitorandradeschweitzers-projects.vercel.app"
 ]
 
 REST_FRAMEWORK = {
