@@ -2,7 +2,9 @@ from rest_framework import serializers
 
 from django.contrib.auth.models import User
 from .models import UserProfile, Post, Conversation, Message
-  
+
+from datetime import datetime
+import re 
 class UserSerializer(serializers.ModelSerializer):
     #campo adicional profile para retornar informações complementares do usuario
     profile = serializers.SerializerMethodField()
@@ -83,18 +85,39 @@ class RegisterSerializer(serializers.ModelSerializer):
         
         if not data['cpf']:
             raise serializers.ValidationError('CPF deve ser preenchido')
+
+        cpf_limpo = re.sub(r'\D', '', data['cpf'])
+        data['cpf'] = cpf_limpo
+        if not cpf_limpo.isdigit() or len(cpf_limpo) != 11:
+            raise serializers.ValidationError('CPF com formato inválido')
+            
         
         if UserProfile.objects.filter(cpf=data['cpf']).first():
             raise serializers.ValidationError('Este CPF já está em uso')
         
+        telefone = re.sub(r'\D', '', data['telefone'])
+        data['telefone'] = telefone
+        if len(telefone) < 10:
+            raise serializers.ValidationError("Telefone deve ter pelo menos 10 números")
+        
+        data_nascimento = data['dataNascimento']
+        try:
+            data_nasc = datetime.strptime(data_nascimento, "%Y-%m-%d").date()
+            if data_nasc > datetime.today().date():
+                raise serializers.ValidationError("Data de nascimento não pode ser no futuro.")
+        except ValueError:
+            raise serializers.ValidationError("Data de nascimento inválida")
+        
+        return data
+        
         
             
     
-    def create(self, data):
-        data.pop('password2')
-        user = User.objects.create_user(username=data['username'], email=data['email'], password=data['password'])
+    def create(self, validated_data):
+        validated_data.pop('password2')
+        user = User.objects.create_user(username=validated_data['username'], email=validated_data['email'], password=validated_data['password'])
         
-        profile = UserProfile.objects.create(user=user)
+        profile = UserProfile.objects.create(user=user, cpf=validated_data['cpf'], dataNascimento=validated_data['dataNascimento'], telefone=validated_data['telefone'])
         profile.save()
         return user
     
