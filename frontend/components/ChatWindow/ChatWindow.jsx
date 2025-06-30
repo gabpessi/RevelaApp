@@ -15,6 +15,7 @@ export default function ChatWindow({ conversationId, onBack, conversationName })
     const [selectedFile, setSelectedFile] = useState(null)
     const fileInputRef = useRef(null)
     const prevConversationId = useRef();
+    const [isSending, setIsSending] = useState(false);
 
     useEffect(() => {
         let intervalId;
@@ -85,7 +86,9 @@ export default function ChatWindow({ conversationId, onBack, conversationName })
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
+        if (isSending) return;
         if (!newMessage.trim() && !selectedFile) return;
+        setIsSending(true);
         try {
             const token = localStorage.getItem('token');
             let userId = null;
@@ -114,6 +117,8 @@ export default function ChatWindow({ conversationId, onBack, conversationName })
             }
         } catch (err) {
             setError('Erro ao enviar mensagem');
+        } finally {
+            setIsSending(false);
         }
     };
 
@@ -173,9 +178,9 @@ export default function ChatWindow({ conversationId, onBack, conversationName })
                     <button 
                         type="submit" 
                         className={styles.sendButton}
-                        disabled={!newMessage.trim() && !selectedFile}
+                        disabled={isSending || (!newMessage.trim() && !selectedFile)}
                     >
-                        <IoSend size={15} />
+                        {isSending ? 'Enviando...' : <IoSend size={15} />}
                     </button>
                 </div>
             </form>

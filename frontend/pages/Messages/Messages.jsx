@@ -45,6 +45,7 @@ export default function Messages() {
                     onSelectConversation={setSelectedConversation}
                     onSelectUser={handleSelectUser}
                     isMessagesPage={!selectedConversation}
+                    isLoadingUsers={loading}
                 />
             </div>
             <div className={`${styles.messagesContent} ${selectedConversation ? styles.active : ''}`}>

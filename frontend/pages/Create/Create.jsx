@@ -9,6 +9,7 @@ export default function Create() {
     const [imagePreview, setImagePreview] = useState(null);
     const [description, setDescription] = useState('');
     const [message, setMessage] = useState("");
+    const [isPosting, setIsPosting] = useState(false);
     const navigate = useNavigate();
 
     const handleImageChange = (e) => {
@@ -32,7 +33,8 @@ export default function Create() {
     const handlePost = async (e) => {
         e.preventDefault();
         if (!description && !image) return;
-        // pra enviar texto e descrição na mesma requisão
+        setIsPosting(true);
+        // pra enviar texto e descrição na mesma requisição
         const formData = new FormData();
         formData.append("text", description);
         if (image) {
@@ -50,6 +52,8 @@ export default function Create() {
             setTimeout(() => navigate("/"), 1200);
         } catch (error) {
             setMessage("Erro ao criar post.");
+        } finally {
+            setIsPosting(false);
         }
     };
 
@@ -97,7 +101,9 @@ export default function Create() {
                                 value={description}
                                 onChange={e => setDescription(e.target.value)}
                             />
-                            <button className={styles.postButton} type="submit">Postar</button>
+                            <button className={styles.postButton} type="submit" disabled={isPosting}>
+                                {isPosting ? 'Postando...' : 'Postar'}
+                            </button>
                         </form>
                         {message && <p>{message}</p>}
                     </div>
