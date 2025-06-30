@@ -4,7 +4,7 @@ import Message from '../Message/Message';
 import { IoArrowBack, IoAttach, IoClose, IoSend } from 'react-icons/io5'
 import {getMessagesAPI, sendMessageAPI } from '../../src/services/messages';
 import { getUserIdFromToken } from '../../src/utils/jwt';
-import { getMessageImageUrl } from '../../src/services/api';
+import { getImageUrl } from '../../src/services/api';
 
 export default function ChatWindow({ conversationId, onBack, conversationName }) {  
     const [messages, setMessages] = useState([]);
@@ -134,7 +134,7 @@ export default function ChatWindow({ conversationId, onBack, conversationName })
                     timestamp={message.timestamp}
                     isSent={message.isSent}
                     senderName={message.senderName}
-                    image={getMessageImageUrl(message.image)}
+                    image={getImageUrl(message.image)}
                 />
                 ))}
                 <div ref={messagesEndRef} />
