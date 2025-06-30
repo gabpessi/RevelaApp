@@ -11,6 +11,5 @@
   ],
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite",
-  "description": "Frontend Revela"
+  "framework": "vite"
 } 
