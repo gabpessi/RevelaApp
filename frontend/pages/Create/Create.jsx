@@ -34,7 +34,7 @@ export default function Create() {
         e.preventDefault();
         if (!description && !image) return;
         setIsPosting(true);
-        // pra enviar texto e descrição na mesma requisição
+        // pra enviar texto e descrição na mesma requisão
         const formData = new FormData();
         formData.append("text", description);
         if (image) {
