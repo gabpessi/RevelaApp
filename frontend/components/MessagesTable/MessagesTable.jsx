@@ -5,7 +5,7 @@ import MessageCard from '../MessageCard/MessageCard';
 export default function MessagesTable({ conversations = [], users = [], selectedConversation, onSelectConversation, onSelectUser, isMessagesPage = false, isLoadingUsers = false }) {
     const [busca, setBusca] = useState('');
     const loggedUserId = localStorage.getItem('userId');
-
+    console.log('USERS:', users);
     // Busca usuários filtrados
     const filteredUsers = users
         .filter(user => String(user.id) !== String(loggedUserId))
