@@ -11,6 +11,9 @@ class UserProfile(models.Model):
         instagram = models.CharField(max_length=1000, null=True, blank=True)
         linkedin = models.CharField(max_length=1000, null=True, blank=True)
         amigos = models.ManyToManyField("self", symmetrical=True, blank=True)
+        cpf = models.CharField(max_length=20, null=True, blank=True)
+        telefone = models.CharField(max_length=20, null=True, blank=True)
+        dataNascimento = models.DateField(null=True, blank=True)
         
 #modelo básico de posts, atualizar depois
 class Post(models.Model):
@@ -42,5 +45,5 @@ class Message(models.Model):
     conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE)
     image = CloudinaryField('messages/images/%y/%m/%d', null=True, blank=True)
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)

@@ -33,6 +33,9 @@ class UserSerializer(serializers.ModelSerializer):
             profile.facebook = profile_data.get('facebook', profile.facebook)
             profile.instagram = profile_data.get('instagram', profile.instagram)
             profile.linkedin = profile_data.get('linkedin', profile.linkedin)
+            profile.cpf = profile_data.get('cpf', profile.linkedin)
+            profile.dataNascimento = profile_data.get('dataNascimento', profile.linkedin)
+            profile.telefone = profile_data.get('telefone', profile.linkedin)
             profile.save()
 
         return instance
@@ -43,7 +46,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserProfile
-        fields = ['imagem', 'sobre', 'facebook', 'instagram', 'linkedin', 'amigos']
+        fields = ['imagem', 'sobre', 'facebook', 'instagram', 'linkedin', 'amigos', 'dataNascimento', 'telefone',  'cpf']
     
     #retorna os amigos
     def get_amigos(Self, obj):
@@ -77,6 +80,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         if "@" not in  data['email'] or '.com' not in data['email']:
             raise serializers.ValidationError("Email inválido")
+        
+        if not data['cpf']:
+            raise serializers.ValidationError('CPF deve ser preenchido')
+        
+        if UserProfile.objects.filter(cpf=data['cpf']).first():
+            raise serializers.ValidationError('Este CPF já está em uso')
+        
+        
+            
     
     def create(self, data):
         data.pop('password2')
