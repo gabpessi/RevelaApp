@@ -2,25 +2,24 @@ import { useState } from 'react';
 import styles from './MessagesTable.module.css';
 import MessageCard from '../MessageCard/MessageCard';
 
-export default function MessagesTable({ conversations = [], users = [], selectedConversation, onSelectConversation, onSelectUser, isMessagesPage = false, isLoadingUsers = false }) { 
+export default function MessagesTable({ conversations = [], users = [], selectedConversation, onSelectConversation, onSelectUser, isMessagesPage = false, isLoadingUsers = false }) {
     const [busca, setBusca] = useState('');
+    const loggedUserId = localStorage.getItem('userId');
 
-    console.log('MessagesTable received conversations:', conversations);
-    console.log('MessagesTable conversations length:', conversations.length);
+    // Busca usuários filtrados
+    const filteredUsers = users
+        .filter(user => String(user.id) !== String(loggedUserId))
+        .filter(user => user.username.toLowerCase().includes(busca.toLowerCase()));
 
-    const filteredConversations = conversations.filter(conversation => 
-        conversation.name.toLowerCase().includes(busca.toLowerCase())
-    );
+    // saber se já existe conversa com o user
+    function getConversationWithUser(userId) {
+        return conversations.find(conv =>
+            (conv.user1 && conv.user1.id === userId) ||
+            (conv.user2 && conv.user2.id === userId)
+        );
+    }
 
-    console.log('Filtered conversations:', filteredConversations);
-
-    const filteredUsers = users.filter(user => 
-        user.name.toLowerCase().includes(busca.toLowerCase())
-    );
-
-    console.log('Filtered users:', filteredUsers);
-
-    return ( 
+    return (
         <div className={`${styles.tabelaMensagens} ${isMessagesPage ? styles.messagesPage : ''}`}> 
             <h2>Mensagens</h2>
             <input
@@ -31,29 +30,30 @@ export default function MessagesTable({ conversations = [], users = [], selected
             />
             {isLoadingUsers ? (
                 <p>Buscando usuários...</p>
-            ) : filteredConversations.length === 0 ? (
-                <p>Nenhuma conversa encontrada</p>
-            ) : (
-                filteredConversations.map(conversation => (
-                    <MessageCard 
-                        key={conversation.id}
-                        profilePicture={conversation.profilePicture}
-                        username={conversation.name}
-                        ultimaMensagem={conversation.lastMessage}
-                        isSelected={selectedConversation === conversation.id}
-                        onClick={() => onSelectConversation(conversation.id)}
-                    />
-                ))
-            )}
-            {isLoadingUsers ? (
-                <p>Buscando usuários...</p>
             ) : filteredUsers.length === 0 ? (
                 <p>Nenhum usuário encontrado</p>
             ) : (
                 filteredUsers.map(user => {
-                    // ... existing code ...
+                    const existingConv = getConversationWithUser(user.id);
+                    return (
+                        <MessageCard
+                            key={user.id}
+                            profilePic={user.profile?.imagem}
+                            username={user.username}
+                            ultimaMensagem={existingConv ? existingConv.lastMessage : ''}
+                            isSelected={String(selectedConversation) === String(existingConv && existingConv.id)}
+                            onClick={() => {
+                                if (existingConv) {
+                                    onSelectConversation(existingConv.id);
+                                } else {
+                                    onSelectUser(user);
+                                }
+                            }}
+                            hasConversation={!!existingConv}
+                        />
+                    );
                 })
             )}
         </div>
-    )
+    );
 }
