@@ -21,6 +21,12 @@ export async function apiFetch(endpoint, options = {}) {
     headers,
   });
   
+  if (response.status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    window.location.href = '/login';
+    throw new Error('Não autorizado');
+  }
   if (!response.ok) {
     throw new Error('Erro na requisição');
   }

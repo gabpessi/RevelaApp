@@ -21,6 +21,10 @@ export default function Feed() {
                 const postsData = await apiFetch("/posts");
                 setPosts(postsData);
             } catch (error) {
+                if (error.message === 'Não autorizado') {
+                    setPostsError('Não autorizado. Você será redirecionado para a página de Login.');
+                    return;
+                }
                 console.error("Erro ao buscar posts:", error);
                 setPostsError("Erro ao carregar posts");
             } finally {
@@ -60,6 +64,7 @@ export default function Feed() {
                 onSelectConversation={handleSelectConversation}
                 onSelectUser={handleSelectUser}
                 className={styles.hidden}
+                isLoadingUsers={loading}
             />
             <div className={styles.feed}>
                 {postsLoading && <p>Carregando posts...</p>}
