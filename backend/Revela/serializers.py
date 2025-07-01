@@ -123,7 +123,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ["username", "email", "password", "password2"]   
+        fields = ["username", "email", "password", "password2", "cpf", "telefone", "dataNascimento"]   
          
 class PostSerializer(serializers.ModelSerializer):
     #hiddenField, o campo não vai aparecer no json, mas vai ser preenchido com o usuario atual
