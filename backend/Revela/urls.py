@@ -8,7 +8,7 @@ from .views import UsersView,UsuarioLogadoView, RegisterView, UserPostsView, Fee
 urlpatterns = [
     # path('api/usuario', UsuarioLogadoView.as_view(), name='a  pi_usuario')
     path("api/auth/register", RegisterView.as_view(), name="api_register_user"),
-    path("api/user/<int:id>", UsuarioLogadoView.as_view(), name="api_user_data"),
+    path("api/user", UsuarioLogadoView.as_view(), name="api_user_data"),
     path("api/users/post", UserPostsView.as_view(), name="api_user_post"),
     path("api/users/", UsersView.as_view(), name="api_user_post"),
     
