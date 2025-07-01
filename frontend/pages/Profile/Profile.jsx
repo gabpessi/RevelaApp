@@ -79,7 +79,7 @@ export default function Profile() {
         data.append('profile.imagem', formData.imagem);
       }
      
-      await apiFetch(`/user/`, {
+      await apiFetch(`/user`, {
         method: 'PUT',
         body: data
       });
