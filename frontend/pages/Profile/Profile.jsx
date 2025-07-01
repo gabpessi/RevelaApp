@@ -14,27 +14,27 @@ export default function Profile() {
     facebook: '',
     instagram: '',
     linkedin: '',
-    amigos: [],
     cpf: '',
     telefone: '',
     dataNascimento: '',
     imagem: null,
   });
+  const [username, setUsername] = useState('');
 
   const token = localStorage.getItem('token');
-  const userId = getUserIdFromToken(token);
+  const userId = paramId || getUserIdFromToken(token);
 
   useEffect(() => {
     async function fetchProfile() {
       if (!userId) return;
       try {
         const response = await apiFetch(`/user/${userId}`);
+        setUsername(response.username || '');
         setFormData({
           sobre: response.sobre || '',
           facebook: response.facebook || '',
           instagram: response.instagram || '',
           linkedin: response.linkedin || '',
-          amigos: response.amigos || [],
           cpf: response.cpf || '',
           telefone: response.telefone || '',
           dataNascimento: response.dataNascimento || '',
@@ -92,10 +92,12 @@ export default function Profile() {
     <div className={styles.profileContainer}>
       <div className={styles.profileHeader}>
         <img src={previewImage || profileImage} alt="Foto de perfil" className={styles.profileImage} />
-        {isEditing && <input type="file" onChange={handleImageChange} />}
-        <button onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? 'Salvar alterações' : 'Editar perfil'}
-        </button>
+        <div>
+          <h2 className={styles.profileName}>{username}</h2>
+          <button onClick={() => setIsEditing(!isEditing)}>
+            {isEditing ? 'Salvar alterações' : 'Editar perfil'}
+          </button>
+        </div>
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.field}>
@@ -103,7 +105,7 @@ export default function Profile() {
           {isEditing ? (
             <textarea name="sobre" value={formData.sobre} onChange={handleChange} />
           ) : (
-            <p>{formData.sobre}</p>
+            <p>{formData.sobre ? formData.sobre : 'Adicionar'}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -111,7 +113,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="facebook" value={formData.facebook} onChange={handleChange} />
           ) : (
-            <p>{formData.facebook}</p>
+            <p>{formData.facebook ? formData.facebook : 'Adicionar'}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -119,7 +121,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="instagram" value={formData.instagram} onChange={handleChange} />
           ) : (
-            <p>{formData.instagram}</p>
+            <p>{formData.instagram ? formData.instagram : 'Adicionar'}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -127,7 +129,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="linkedin" value={formData.linkedin} onChange={handleChange} />
           ) : (
-            <p>{formData.linkedin}</p>
+            <p>{formData.linkedin ? formData.linkedin : 'Adicionar'}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -135,7 +137,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="cpf" value={formData.cpf} onChange={handleChange} />
           ) : (
-            <p>{formData.cpf}</p>
+            <p>{formData.cpf ? formData.cpf : 'Adicionar'}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -143,7 +145,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="telefone" value={formData.telefone} onChange={handleChange} />
           ) : (
-            <p>{formData.telefone}</p>
+            <p>{formData.telefone ? formData.telefone : 'Adicionar'}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -151,20 +153,8 @@ export default function Profile() {
           {isEditing ? (
             <input name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} />
           ) : (
-            <p>{formData.dataNascimento}</p>
+            <p>{formData.dataNascimento ? formData.dataNascimento : 'Adicionar'}</p>
           )}
-        </div>
-        <div className={styles.field}>
-          <label>Amigos</label>
-          <div>
-            {formData.amigos && formData.amigos.length > 0 ? (
-              formData.amigos.map((amigo, i) => (
-                <span key={i} className={styles.tag}>{amigo}</span>
-              ))
-            ) : (
-              <span>Nenhum amigo adicionado.</span>
-            )}
-          </div>
         </div>
         {isEditing && (
           <button type="submit">Salvar</button>
