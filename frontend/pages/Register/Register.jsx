@@ -61,10 +61,13 @@ export default function Register() {
       return;
     }
 
+    // cria um objeto para enviar ao backend sem aceitaTermos
+    const { aceitaTermos, ...payload } = formData;
+
     try {
       await apiFetch('/auth/register', {
         method: 'POST',
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
       setSuccess('Cadastro realizado com sucesso!');
       setTimeout(() => navigate('/login'), 1500);
