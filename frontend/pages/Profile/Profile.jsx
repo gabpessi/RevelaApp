@@ -28,7 +28,7 @@ export default function Profile() {
     async function fetchProfile() {
       if (!userId) return;
       try {
-        const response = await apiFetch(`/user/${userId}`);
+        const response = await apiFetch(`/user`);
         setUsername(response.username || '');
         setFormData({
           sobre: response.sobre || '',
@@ -78,7 +78,7 @@ export default function Profile() {
       if (formData.imagem instanceof File) {
         data.append('imagem', formData.imagem);
       }
-      await apiFetch(`/user/${userId}`, {
+      await apiFetch(`/user`, {
         method: 'PUT',
         body: data
       });
