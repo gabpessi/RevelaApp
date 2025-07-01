@@ -3,11 +3,13 @@ import styles from './Profile.module.css';
 import { apiFetch } from '../../src/services/api';
 import { getUserIdFromToken } from '../../src/utils/jwt';
 import { useParams } from 'react-router-dom';
+import defaultProfileImg from '../../src/assets/default-profile.jpg';
+import { IoAdd, IoTrash } from 'react-icons/io5';
 
 export default function Profile() {
   const { id: paramId } = useParams();
   const [isEditing, setIsEditing] = useState(false);
-  const [profileImage, setProfileImage] = useState('/default-profile.png');
+  const [profileImage, setProfileImage] = useState(defaultProfileImg);
   const [previewImage, setPreviewImage] = useState(null);
   const [formData, setFormData] = useState({
     sobre: '',
@@ -41,7 +43,8 @@ export default function Profile() {
           dataNascimento: response.profile?.dataNascimento || '',
           imagem: response.profile?.imagem || null,
         });
-        setProfileImage(response.profile?.imagem || '/default-profile.png');
+        setProfileImage(response.profile?.imagem || defaultProfileImg);
+        setPreviewImage(null);
       } catch (err) {
         console.error('Erro ao buscar perfil:', err);
       }
@@ -52,11 +55,20 @@ export default function Profile() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
-      setProfileImage(imageUrl);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
       setFormData(prev => ({ ...prev, imagem: file }));
     }
+  };
+
+  const handleRemoveImage = (e) => {
+    e.preventDefault();
+    setPreviewImage(null);
+    setProfileImage(defaultProfileImg);
+    setFormData(prev => ({ ...prev, imagem: null }));
   };
 
   const handleChange = (e) => {
@@ -92,10 +104,40 @@ export default function Profile() {
   return (
     <div className={styles.profileContainer}>
       <div className={styles.profileHeader}>
-        <img src={previewImage || profileImage} alt="Foto de perfil" className={styles.profileImage} />
+        <div className={styles.addImage}>
+          <input
+            type="file"
+            id="profileImageInput"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          <label htmlFor="profileImageInput" className={styles.imageLabel}>
+            {previewImage || profileImage ? (
+              <div className={styles.previewContainer}>
+                <img src={previewImage || profileImage} alt="Foto de perfil" className={styles.profileImage} />
+                {isEditing && (previewImage || formData.imagem) && (
+                  <button
+                    className={styles.deleteButton}
+                    onClick={handleRemoveImage}
+                  >
+                    <IoTrash size={24} />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className={styles.plusIcon}>
+                <IoAdd size={32} />
+              </div>
+            )}
+          </label>
+        </div>
         <div>
           <h2 className={styles.profileName}>{username}</h2>
-          <button onClick={() => setIsEditing(!isEditing)}>
+          <button
+            onClick={isEditing ? handleSubmit : () => setIsEditing(true)}
+            type="button"
+          >
             {isEditing ? 'Salvar alterações' : 'Editar perfil'}
           </button>
         </div>
@@ -157,9 +199,6 @@ export default function Profile() {
             <p>{formData.dataNascimento ? formData.dataNascimento : 'Adicionar'}</p>
           )}
         </div>
-        {isEditing && (
-          <button type="submit">Salvar</button>
-        )}
       </form>
     </div>
   );
