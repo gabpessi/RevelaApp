@@ -159,7 +159,7 @@ export default function Profile() {
           {isEditing ? (
             <textarea name="sobre" value={formData.sobre} onChange={handleChange} />
           ) : (
-            <p>{formData.sobre ? formData.sobre : ''}</p>
+            <p className={styles.infoText}>{formData.sobre ? formData.sobre : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -167,7 +167,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="facebook" value={formData.facebook} onChange={handleChange} />
           ) : (
-            <p>{formData.facebook ? formData.facebook : ''}</p>
+            <p className={styles.infoText}>{formData.facebook ? formData.facebook : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -175,7 +175,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="instagram" value={formData.instagram} onChange={handleChange} />
           ) : (
-            <p>{formData.instagram ? formData.instagram : ''}</p>
+            <p className={styles.infoText}>{formData.instagram ? formData.instagram : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -183,7 +183,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="linkedin" value={formData.linkedin} onChange={handleChange} />
           ) : (
-            <p>{formData.linkedin ? formData.linkedin : ''}</p>
+            <p className={styles.infoText}>{formData.linkedin ? formData.linkedin : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -191,7 +191,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="cpf" value={formData.cpf} onChange={handleChange} />
           ) : (
-            <p>{formData.cpf ? formData.cpf : ''}</p>
+            <p className={styles.infoText}>{formData.cpf ? formData.cpf : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -199,7 +199,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="telefone" value={formData.telefone} onChange={handleChange} />
           ) : (
-            <p>{formData.telefone ? formData.telefone : ''}</p>
+            <p className={styles.infoText}>{formData.telefone ? formData.telefone : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -207,7 +207,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} />
           ) : (
-            <p>{formData.dataNascimento ? formData.dataNascimento : ''}</p>
+            <p className={styles.infoText}>{formData.dataNascimento ? new Date(formData.dataNascimento).toLocaleDateString('pt-BR', { year: '2-digit' }) : ''}</p>
           )}
         </div>
       </form>

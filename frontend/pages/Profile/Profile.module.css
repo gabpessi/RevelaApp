@@ -134,6 +134,12 @@
   background: transparent;
 }
 
+.infoText {
+  color: #666;
+  font-size: 16px;
+  font-weight: 400;
+}
+
 .alterarFoto {
   display: block;
   text-align: center;
