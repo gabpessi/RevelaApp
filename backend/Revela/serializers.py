@@ -66,7 +66,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True, required=True)
-    
+    cpf = serializers.CharField(write_only=True)
+    telefone = serializers.CharField(write_only=True)
+    dataNascimento = serializers.CharField(write_only=True)
     def validate(self, data):
         if data['password'] != data['password2']:
             raise serializers.ValidationError('Senhas devem ser iguais')
