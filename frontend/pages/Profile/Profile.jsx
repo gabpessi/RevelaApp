@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import styles from './Profile.module.css';
 import { apiFetch } from '../../src/services/api';
 import { getUserIdFromToken } from '../../src/utils/jwt';
+import { useParams } from 'react-router-dom';
 
 export default function Profile() {
+  const { id: paramId } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState('/default-profile.png');
   const [previewImage, setPreviewImage] = useState(null);

@@ -26,9 +26,9 @@ export const router = createBrowserRouter([
       {
         path: '/messages',
         element: <ProtectedRoute><Messages /></ProtectedRoute>
-      },
+      },      
       {
-        path: '/profile',
+        path: '/users/:id',
         element: <Profile />
       },
       {
