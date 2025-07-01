@@ -62,8 +62,8 @@ export default function Header() {
           <Link to="/messages" onClick={() => setIsMenuOpen(false)}>
             <li className={isActive('/messages') ? styles.active : ''}>Mensagens</li>
           </Link>
-          <Link to={`/users/${userId}`} onClick={() => setIsMenuOpen(false)}>
-            <li className={isActive('/users') ? styles.active : ''}>Perfil</li>
+          <Link to={`/user/${userId}`} onClick={() => setIsMenuOpen(false)}>
+            <li className={isActive('/user') ? styles.active : ''}>Perfil</li>
           </Link>
           <li>
             <button onClick={() => setShowLogoutModal(true)} className={styles.logoutButton}>Sair</button>
