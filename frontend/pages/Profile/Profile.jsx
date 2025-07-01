@@ -32,16 +32,16 @@ export default function Profile() {
         console.log('Dados do usuário recebidos do backend:', response); 
         setUsername(response.username || '');
         setFormData({
-          sobre: response.sobre || '',
-          facebook: response.facebook || '',
-          instagram: response.instagram || '',
-          linkedin: response.linkedin || '',
-          cpf: response.cpf || '',
-          telefone: response.telefone || '',
-          dataNascimento: response.dataNascimento || '',
-          imagem: response.imagem || null,
+          sobre: response.profile?.sobre || '',
+          facebook: response.profile?.facebook || '',
+          instagram: response.profile?.instagram || '',
+          linkedin: response.profile?.linkedin || '',
+          cpf: response.profile?.cpf || '',
+          telefone: response.profile?.telefone || '',
+          dataNascimento: response.profile?.dataNascimento || '',
+          imagem: response.profile?.imagem || null,
         });
-        setProfileImage(response.imagem || '/default-profile.png');
+        setProfileImage(response.profile?.imagem || '/default-profile.png');
       } catch (err) {
         console.error('Erro ao buscar perfil:', err);
       }
