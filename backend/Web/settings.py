@@ -29,7 +29,7 @@ DATABASES = {
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret")
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
