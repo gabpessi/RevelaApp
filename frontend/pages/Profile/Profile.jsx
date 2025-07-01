@@ -66,20 +66,20 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userId) return;
     try {
       const data = new FormData();
-      data.append('sobre', formData.sobre);
-      data.append('facebook', formData.facebook);
-      data.append('instagram', formData.instagram);
-      data.append('linkedin', formData.linkedin);
-      data.append('cpf', formData.cpf);
-      data.append('telefone', formData.telefone);
-      data.append('dataNascimento', formData.dataNascimento);
+      data.append('profile.sobre', formData.sobre);
+      data.append('profile.facebook', formData.facebook);
+      data.append('profile.instagram', formData.instagram);
+      data.append('profile.linkedin', formData.linkedin);
+      data.append('profile.cpf', formData.cpf);
+      data.append('profile.telefone', formData.telefone);
+      data.append('profile.dataNascimento', formData.dataNascimento);
       if (formData.imagem instanceof File) {
-        data.append('imagem', formData.imagem);
+        data.append('profile.imagem', formData.imagem);
       }
-      await apiFetch(`/user`, {
+      const endpoint = paramId ? `/user/${paramId}` : `/user`;
+      await apiFetch(endpoint, {
         method: 'PUT',
         body: data
       });
