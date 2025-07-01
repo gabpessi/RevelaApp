@@ -5,6 +5,7 @@ import { getUserIdFromToken } from '../../src/utils/jwt';
 import { useParams } from 'react-router-dom';
 import defaultProfileImg from '../../src/assets/default-profile.jpg';
 import { IoAdd, IoTrash } from 'react-icons/io5';
+import Button from '../../components/Button/Button';
 
 export default function Profile() {
   const { id: paramId } = useParams();
@@ -134,12 +135,12 @@ export default function Profile() {
         </div>
         <div>
           <h2 className={styles.profileName}>{username}</h2>
-          <button
+          <Button
             onClick={isEditing ? handleSubmit : () => setIsEditing(true)}
             type="button"
           >
             {isEditing ? 'Salvar alterações' : 'Editar perfil'}
-          </button>
+          </Button>
         </div>
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>
