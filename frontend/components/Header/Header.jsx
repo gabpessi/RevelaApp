@@ -3,12 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../src/assets/revela-logo-branco.png';
 import styles from './Header.module.css';
 import Modal from '../../components/Modal/Modal.jsx';
+import { getUserIdFromToken } from '../../src/utils/jwt';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Pega o userId do token
+  const token = localStorage.getItem('token');
+  const userId = getUserIdFromToken(token);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -57,8 +62,8 @@ export default function Header() {
           <Link to="/messages" onClick={() => setIsMenuOpen(false)}>
             <li className={isActive('/messages') ? styles.active : ''}>Mensagens</li>
           </Link>
-          <Link to="/profile onClick={() => setIsMenuOpen(false)}">
-            <li className={isActive('/profile') ? styles.active : ''}>Perfil</li>
+          <Link to={`/users/${userId}`} onClick={() => setIsMenuOpen(false)}>
+            <li className={isActive('/users') ? styles.active : ''}>Perfil</li>
           </Link>
           <li>
             <button onClick={() => setShowLogoutModal(true)} className={styles.logoutButton}>Sair</button>
