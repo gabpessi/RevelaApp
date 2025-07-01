@@ -23,6 +23,7 @@ export default function Profile() {
     imagem: null,
   });
   const [username, setUsername] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   const token = localStorage.getItem('token');
   const userId = paramId || getUserIdFromToken(token);
@@ -79,6 +80,7 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
       const data = new FormData();
       data.append('sobre', formData.sobre);
@@ -99,6 +101,8 @@ export default function Profile() {
       setIsEditing(false);
     } catch (err) {
       console.error('Erro ao salvar alterações:', err);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -148,8 +152,9 @@ export default function Profile() {
           <Button
             onClick={isEditing ? handleSubmit : () => setIsEditing(true)}
             type="button"
+            disabled={isSaving}
           >
-            {isEditing ? 'Salvar alterações' : 'Editar perfil'}
+            {isEditing ? (isSaving ? 'Alterando...' : 'Salvar alterações') : 'Editar perfil'}
           </Button>
         </div>
       </div>
