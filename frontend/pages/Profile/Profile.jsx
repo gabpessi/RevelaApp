@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './Profile.module.css';
-import { apiFetch } from '../../src/services/api';
+import { apiFetch, getImageUrl } from '../../src/services/api';
 import { getUserIdFromToken } from '../../src/utils/jwt';
 import { useParams } from 'react-router-dom';
 import defaultProfileImg from '../../src/assets/default-profile.jpg';
@@ -44,7 +44,7 @@ export default function Profile() {
           dataNascimento: response.profile?.dataNascimento || '',
           imagem: response.profile?.imagem || null,
         });
-        setProfileImage(response.profile?.imagem || defaultProfileImg);
+        setProfileImage(getImageUrl(response.profile?.imagem) || defaultProfileImg);
         setPreviewImage(null);
       } catch (err) {
         console.error('Erro ao buscar perfil:', err);
@@ -106,6 +106,7 @@ export default function Profile() {
     <div className={styles.profileContainer}>
       <div className={styles.profileHeader}>
         <div className={styles.addImage}>
+          {isEditing && <span className={styles.alterarFoto}>Alterar foto</span>}
           <input
             type="file"
             id="profileImageInput"
@@ -116,11 +117,12 @@ export default function Profile() {
           <label htmlFor="profileImageInput" className={styles.imageLabel}>
             {previewImage || profileImage ? (
               <div className={styles.previewContainer}>
-                <img src={previewImage || profileImage} alt="Foto de perfil" className={styles.profileImage} />
+                <img src={previewImage || getImageUrl(formData.imagem) || defaultProfileImg} alt="Foto de perfil" className={styles.profileImage} />
                 {isEditing && (previewImage || formData.imagem) && (
                   <button
-                    className={styles.deleteButton}
+                    className={styles.deleteButtonNoBg}
                     onClick={handleRemoveImage}
+                    type="button"
                   >
                     <IoTrash size={24} />
                   </button>
@@ -149,7 +151,7 @@ export default function Profile() {
           {isEditing ? (
             <textarea name="sobre" value={formData.sobre} onChange={handleChange} />
           ) : (
-            <p>{formData.sobre ? formData.sobre : 'Adicionar'}</p>
+            <p>{formData.sobre ? formData.sobre : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -157,7 +159,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="facebook" value={formData.facebook} onChange={handleChange} />
           ) : (
-            <p>{formData.facebook ? formData.facebook : 'Adicionar'}</p>
+            <p>{formData.facebook ? formData.facebook : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -165,7 +167,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="instagram" value={formData.instagram} onChange={handleChange} />
           ) : (
-            <p>{formData.instagram ? formData.instagram : 'Adicionar'}</p>
+            <p>{formData.instagram ? formData.instagram : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -173,7 +175,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="linkedin" value={formData.linkedin} onChange={handleChange} />
           ) : (
-            <p>{formData.linkedin ? formData.linkedin : 'Adicionar'}</p>
+            <p>{formData.linkedin ? formData.linkedin : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -181,7 +183,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="cpf" value={formData.cpf} onChange={handleChange} />
           ) : (
-            <p>{formData.cpf ? formData.cpf : 'Adicionar'}</p>
+            <p>{formData.cpf ? formData.cpf : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -189,7 +191,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="telefone" value={formData.telefone} onChange={handleChange} />
           ) : (
-            <p>{formData.telefone ? formData.telefone : 'Adicionar'}</p>
+            <p>{formData.telefone ? formData.telefone : ''}</p>
           )}
         </div>
         <div className={styles.field}>
@@ -197,7 +199,7 @@ export default function Profile() {
           {isEditing ? (
             <input name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} />
           ) : (
-            <p>{formData.dataNascimento ? formData.dataNascimento : 'Adicionar'}</p>
+            <p>{formData.dataNascimento ? formData.dataNascimento : ''}</p>
           )}
         </div>
       </form>
