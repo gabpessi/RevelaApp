@@ -81,17 +81,17 @@ export default function Profile() {
     e.preventDefault();
     try {
       const data = new FormData();
-      data.append('profile.sobre', formData.sobre);
-      data.append('profile.facebook', formData.facebook);
-      data.append('profile.instagram', formData.instagram);
-      data.append('profile.linkedin', formData.linkedin);
-      data.append('profile.cpf', formData.cpf);
-      data.append('profile.telefone', formData.telefone);
-      data.append('profile.dataNascimento', formData.dataNascimento);
+      data.append('sobre', formData.sobre);
+      data.append('facebook', formData.facebook);
+      data.append('instagram', formData.instagram);
+      data.append('linkedin', formData.linkedin);
+      data.append('cpf', formData.cpf);
+      data.append('telefone', formData.telefone);
+      data.append('dataNascimento', formData.dataNascimento);
       if (formData.imagem instanceof File) {
-        data.append('profile.imagem', formData.imagem);
+        data.append('imagem', formData.imagem);
       }
-      const response = await apiFetch(`/user`, {
+      const response = await apiFetch('/user', {
         method: 'PUT',
         body: data
       });
