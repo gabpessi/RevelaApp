@@ -83,6 +83,7 @@ export default function Profile() {
         method: 'PUT',
         body: data
       });
+      console.log('Resposta do backend ao atualizar perfil:', response);
       setIsEditing(false);
     } catch (err) {
       console.error('Erro ao salvar alterações:', err);
