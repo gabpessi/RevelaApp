@@ -213,7 +213,7 @@ export default function Profile() {
                     const d = new Date(formData.dataNascimento);
                     const dia = String(d.getDate()).padStart(2, '0');
                     const mes = String(d.getMonth() + 1).padStart(2, '0');
-                    const ano = String(d.getFullYear()).slice(-2);
+                    const ano = String(d.getFullYear());
                     return `${dia}/${mes}/${ano}`;
                   })()
                 : ''}
