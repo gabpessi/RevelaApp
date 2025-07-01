@@ -1,5 +1,3 @@
-//import { getUserIdFromToken } from '../utils/jwt';
-//muda aqui na produção
 const API_URL = "/api";
 
 function getToken() {

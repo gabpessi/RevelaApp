@@ -1,4 +1,4 @@
-// Função utilitária para decodificar um JWT
+// função para decodificar um JWT
 export function decodeJWT(token) {
   if (!token) return null;
   try {
