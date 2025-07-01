@@ -78,8 +78,7 @@ export default function Profile() {
       if (formData.imagem instanceof File) {
         data.append('profile.imagem', formData.imagem);
       }
-     
-      await apiFetch(`/user`, {
+      const response = await apiFetch(`/user`, {
         method: 'PUT',
         body: data
       });
