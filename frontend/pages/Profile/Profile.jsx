@@ -78,8 +78,8 @@ export default function Profile() {
       if (formData.imagem instanceof File) {
         data.append('profile.imagem', formData.imagem);
       }
-      const endpoint = paramId ? `/user/${paramId}` : `/user`;
-      await apiFetch(endpoint, {
+     
+      await apiFetch(`/user/`, {
         method: 'PUT',
         body: data
       });
