@@ -207,7 +207,17 @@ export default function Profile() {
           {isEditing ? (
             <input name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} />
           ) : (
-            <p className={styles.infoText}>{formData.dataNascimento ? new Date(formData.dataNascimento).toLocaleDateString('pt-BR', { year: '2-digit' }) : ''}</p>
+            <p className={styles.infoText}>
+              {formData.dataNascimento
+                ? (() => {
+                    const d = new Date(formData.dataNascimento);
+                    const dia = String(d.getDate()).padStart(2, '0');
+                    const mes = String(d.getMonth() + 1).padStart(2, '0');
+                    const ano = String(d.getFullYear()).slice(-2);
+                    return `${dia}/${mes}/${ano}`;
+                  })()
+                : ''}
+            </p>
           )}
         </div>
       </form>
