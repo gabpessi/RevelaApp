@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Register.module.css';
 import Button from '../../components/Button/Button';
+import { apiFetch } from '../../src/services/api';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -55,21 +56,14 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/auth/register', {
+      await apiFetch('/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-
-      if (response.ok) {
-        setSuccess('Cadastro realizado com sucesso!');
-        setTimeout(() => navigate('/login'), 1500);
-      } else {
-        const data = await response.json();
-        setError(data.message || 'Erro ao registrar.');
-      }
+      setSuccess('Cadastro realizado com sucesso!');
+      setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
-      setError('Erro de conexão com o servidor.');
+      setError(err.message || 'Erro ao registrar.');
     }
   }
 

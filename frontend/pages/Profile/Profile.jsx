@@ -1,45 +1,50 @@
 import { useState, useEffect } from 'react';
 import styles from './Profile.module.css';
-import axios from 'axios';
+import { apiFetch } from '../../src/services/api';
+import { getUserIdFromToken } from '../../src/utils/jwt';
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState('/default-profile.png');
   const [previewImage, setPreviewImage] = useState(null);
   const [formData, setFormData] = useState({
-    fullName: '',
-    about: '',
+    sobre: '',
+    facebook: '',
+    instagram: '',
+    linkedin: '',
+    amigos: [],
     cpf: '',
-    dataNascimento: '',
     telefone: '',
-    cidade: '',
-    estado: '',
-    pais: '',
-    equipamento: '',
-    especialidades: [],
-    novaEspecialidade: '',
-    posts: []
+    dataNascimento: '',
+    imagem: null,
   });
+
+  const token = localStorage.getItem('token');
+  const userId = getUserIdFromToken(token);
 
   useEffect(() => {
     async function fetchProfile() {
+      if (!userId) return;
       try {
-        const response = await axios.get('/api/users/me');
-        setFormData(prev => ({ ...prev, ...response.data }));
-        setProfileImage(response.data.profileImage || '/default-profile.png');
+        const response = await apiFetch(`/users/${userId}`);
+        setFormData({
+          sobre: response.sobre || '',
+          facebook: response.facebook || '',
+          instagram: response.instagram || '',
+          linkedin: response.linkedin || '',
+          amigos: response.amigos || [],
+          cpf: response.cpf || '',
+          telefone: response.telefone || '',
+          dataNascimento: response.dataNascimento || '',
+          imagem: response.imagem || null,
+        });
+        setProfileImage(response.imagem || '/default-profile.png');
       } catch (err) {
         console.error('Erro ao buscar perfil:', err);
       }
-
-      try {
-        const postsResponse = await axios.get('/api/users/me/posts');
-        setFormData(prev => ({ ...prev, posts: postsResponse.data }));
-      } catch (err) {
-        console.error('Erro ao buscar posts:', err);
-      }
     }
     fetchProfile();
-  }, []);
+  }, [userId]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -47,6 +52,7 @@ export default function Profile() {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
       setProfileImage(imageUrl);
+      setFormData(prev => ({ ...prev, imagem: file }));
     }
   };
 
@@ -55,20 +61,25 @@ export default function Profile() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleAddEspecialidade = () => {
-    if (formData.novaEspecialidade && !formData.especialidades.includes(formData.novaEspecialidade)) {
-      setFormData(prev => ({
-        ...prev,
-        especialidades: [...prev.especialidades, prev.novaEspecialidade],
-        novaEspecialidade: ''
-      }));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userId) return;
     try {
-      await axios.put('/api/users/me', formData);
+      const data = new FormData();
+      data.append('sobre', formData.sobre);
+      data.append('facebook', formData.facebook);
+      data.append('instagram', formData.instagram);
+      data.append('linkedin', formData.linkedin);
+      data.append('cpf', formData.cpf);
+      data.append('telefone', formData.telefone);
+      data.append('dataNascimento', formData.dataNascimento);
+      if (formData.imagem instanceof File) {
+        data.append('imagem', formData.imagem);
+      }
+      await apiFetch(`/users/${userId}`, {
+        method: 'PUT',
+        body: data
+      });
       setIsEditing(false);
     } catch (err) {
       console.error('Erro ao salvar alterações:', err);
@@ -80,59 +91,83 @@ export default function Profile() {
       <div className={styles.profileHeader}>
         <img src={previewImage || profileImage} alt="Foto de perfil" className={styles.profileImage} />
         {isEditing && <input type="file" onChange={handleImageChange} />}
-        {!isEditing && <h2 className={styles.profileName}>{formData.fullName}</h2>}
         <button onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? 'Salvar alterações' : 'Editar perfil'}
         </button>
       </div>
-
-      <div className={styles.aboutMe}><p>{formData.about}</p></div>
-
       <form onSubmit={handleSubmit} className={styles.form}>
-        {[['Nome completo', 'fullName'], ['Sobre mim', 'about'], ['CPF', 'cpf'], ['Data de nascimento', 'dataNascimento'], ['Telefone', 'telefone'],
-          ['Cidade', 'cidade'], ['Estado', 'estado'], ['País', 'pais'], ['Equipamento', 'equipamento']]
-          .map(([label, name]) => (
-            <div key={name} className={styles.field}>
-              <label>{label}</label>
-              {isEditing ? (
-                <input name={name} value={formData[name]} onChange={handleChange} />
-              ) : (
-                <p>{formData[name]}</p>
-              )}
-            </div>
-          ))}
-
         <div className={styles.field}>
-          <label>Especialidades</label>
-          {isEditing && (
-            <div>
-              <input
-                name="novaEspecialidade"
-                value={formData.novaEspecialidade}
-                onChange={handleChange}
-                placeholder="Ex: Retrato, Natureza..."
-              />
-              <button type="button" onClick={handleAddEspecialidade}>Adicionar</button>
-            </div>
+          <label>Sobre</label>
+          {isEditing ? (
+            <textarea name="sobre" value={formData.sobre} onChange={handleChange} />
+          ) : (
+            <p>{formData.sobre}</p>
           )}
-          <div className={styles.tags}>
-            {formData.especialidades.map((esp, i) => <span key={i} className={styles.tag}>{esp}</span>)}
+        </div>
+        <div className={styles.field}>
+          <label>Facebook</label>
+          {isEditing ? (
+            <input name="facebook" value={formData.facebook} onChange={handleChange} />
+          ) : (
+            <p>{formData.facebook}</p>
+          )}
+        </div>
+        <div className={styles.field}>
+          <label>Instagram</label>
+          {isEditing ? (
+            <input name="instagram" value={formData.instagram} onChange={handleChange} />
+          ) : (
+            <p>{formData.instagram}</p>
+          )}
+        </div>
+        <div className={styles.field}>
+          <label>LinkedIn</label>
+          {isEditing ? (
+            <input name="linkedin" value={formData.linkedin} onChange={handleChange} />
+          ) : (
+            <p>{formData.linkedin}</p>
+          )}
+        </div>
+        <div className={styles.field}>
+          <label>CPF</label>
+          {isEditing ? (
+            <input name="cpf" value={formData.cpf} onChange={handleChange} />
+          ) : (
+            <p>{formData.cpf}</p>
+          )}
+        </div>
+        <div className={styles.field}>
+          <label>Telefone</label>
+          {isEditing ? (
+            <input name="telefone" value={formData.telefone} onChange={handleChange} />
+          ) : (
+            <p>{formData.telefone}</p>
+          )}
+        </div>
+        <div className={styles.field}>
+          <label>Data de Nascimento</label>
+          {isEditing ? (
+            <input name="dataNascimento" type="date" value={formData.dataNascimento} onChange={handleChange} />
+          ) : (
+            <p>{formData.dataNascimento}</p>
+          )}
+        </div>
+        <div className={styles.field}>
+          <label>Amigos</label>
+          <div>
+            {formData.amigos && formData.amigos.length > 0 ? (
+              formData.amigos.map((amigo, i) => (
+                <span key={i} className={styles.tag}>{amigo}</span>
+              ))
+            ) : (
+              <span>Nenhum amigo adicionado.</span>
+            )}
           </div>
         </div>
-
+        {isEditing && (
+          <button type="submit">Salvar</button>
+        )}
       </form>
-
-      <div className={styles.postsSection}>
-        <h3>Criações</h3>
-        <div className={styles.postsGrid}>
-          {formData.posts?.slice().reverse().map(post => (
-            <div key={post.id} className={styles.postCard}>
-              <img src={post.imagem} alt={post.descricao} />
-              <p>{post.descricao}</p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
