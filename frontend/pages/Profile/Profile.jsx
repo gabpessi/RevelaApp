@@ -117,7 +117,15 @@ export default function Profile() {
           <label htmlFor="profileImageInput" className={styles.imageLabel}>
             {previewImage || profileImage ? (
               <div className={styles.previewContainer}>
-                <img src={previewImage || getImageUrl(formData.imagem) || defaultProfileImg} alt="Foto de perfil" className={styles.profileImage} />
+                <img
+                  src={
+                    previewImage
+                      || (typeof formData.imagem === 'string' && getImageUrl(formData.imagem))
+                      || defaultProfileImg
+                  }
+                  alt="Foto de perfil"
+                  className={styles.profileImage}
+                />
                 {isEditing && (previewImage || formData.imagem) && (
                   <button
                     className={styles.deleteButtonNoBg}
