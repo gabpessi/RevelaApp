@@ -20,6 +20,7 @@ export default function Register() {
   const [showPassword2, setShowPassword2] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -28,6 +29,10 @@ export default function Register() {
       ...formData,
       [name]: type === 'checkbox' ? checked : value
     });
+    // Limpa o erro de senha ao digitar
+    if (name === 'password' || name === 'password2') {
+      setPasswordMismatch(false);
+    }
   }
 
   function validarCPF(cpf) {
@@ -42,6 +47,7 @@ export default function Register() {
 
     if (formData.password !== formData.password2) {
       setError('As senhas não coincidem.');
+      setPasswordMismatch(true);
       return;
     }
 
@@ -96,7 +102,6 @@ export default function Register() {
           onChange={handleChange}
         />
 
-
         <input
           name="dataNascimento"
           type="date"
@@ -122,6 +127,7 @@ export default function Register() {
           value={formData.password}
           onChange={handleChange}
           required
+          className={passwordMismatch ? styles.inputError : ''}
         />
         <span
           className={styles.toggle}
@@ -139,6 +145,7 @@ export default function Register() {
           value={formData.password2}
           onChange={handleChange}
           required
+          className={passwordMismatch ? styles.inputError : ''}
         />
         <span
           className={styles.toggle}
@@ -147,7 +154,6 @@ export default function Register() {
           {showPassword2 ? '⚫️' : '👁'}
         </span>
       </div>
-
 
         <label className={styles.checkboxLabel}>
           <input
