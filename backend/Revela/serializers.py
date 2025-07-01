@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
     telefone = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = User
-        fields = ["id", "username", "email", "first_name", "last_name", "profile"
+        fields = ["id", "username", "email", "first_name", "last_name", "profile",
                 "sobre", "facebook", "instagram", "linkedin", "cpf", "dataNascimento", "telefone"]
 
     #campo adicional profile
