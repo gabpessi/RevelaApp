@@ -21,11 +21,15 @@ export default function Profile() {
   });
   const [username, setUsername] = useState('');
 
+  const token = localStorage.getItem('token');
+  const userId = paramId || getUserIdFromToken(token);
+
   useEffect(() => {
     async function fetchProfile() {
+      if (!userId) return;
       try {
-        const endpoint = paramId ? `/user/${paramId}` : `/user`;
-        const response = await apiFetch(endpoint);
+        const response = await apiFetch('/user');
+        console.log('Dados do usuário recebidos do backend:', response); 
         setUsername(response.username || '');
         setFormData({
           sobre: response.sobre || '',
@@ -43,7 +47,7 @@ export default function Profile() {
       }
     }
     fetchProfile();
-  }, [paramId]);
+  }, [userId]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -62,6 +66,7 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userId) return;
     try {
       const data = new FormData();
       data.append('sobre', formData.sobre);
@@ -74,8 +79,7 @@ export default function Profile() {
       if (formData.imagem instanceof File) {
         data.append('imagem', formData.imagem);
       }
-      const endpoint = paramId ? `/user/${paramId}` : `/user`;
-      await apiFetch(endpoint, {
+      await apiFetch(`/user`, {
         method: 'PUT',
         body: data
       });
