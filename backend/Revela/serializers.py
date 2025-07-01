@@ -16,10 +16,11 @@ class UserSerializer(serializers.ModelSerializer):
     cpf = serializers.CharField(write_only=True, required=False)
     dataNascimento = serializers.DateField(write_only=True, required=False)
     telefone = serializers.CharField(write_only=True, required=False)
+    imagem = serializers.ImageField(write_only=True, required=False)
     class Meta:
         model = User
         fields = ["id", "username", "email", "first_name", "last_name", "profile",
-                "sobre", "facebook", "instagram", "linkedin", "cpf", "dataNascimento", "telefone"]
+                "sobre", "facebook", "instagram", "linkedin", "cpf", "dataNascimento", "telefone", "imagem"]
 
     #campo adicional profile
     def get_profile(self, user):
@@ -51,6 +52,8 @@ class UserSerializer(serializers.ModelSerializer):
             profile.dataNascimento = validated_data['dataNascimento']
         if 'telefone' in validated_data:
             profile.telefone = validated_data['telefone']
+        if 'imagem' in validated_data:
+            profile.imagem = validated_data['imagem']
 
 
         profile.save()
