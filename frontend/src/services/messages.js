@@ -27,15 +27,31 @@ export async function getMessagesAPI(conversationId, token) {
 }
 
 // Envia mensagem
-export async function sendMessageAPI(conversationId, content, token) {
-  const response = await fetch(`/api/conversations/${conversationId}/messages`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ content, conversation: conversationId }),
-  });
+export async function sendMessageAPI(conversationId, content, token, file = null) {
+  let response;
+  if (file) {
+    // Se houver arquivo, usa FormData
+    const formData = new FormData();
+    formData.append('content', content);
+    formData.append('conversation', conversationId);
+    formData.append('image', file);
+    response = await fetch(`/api/conversations/${conversationId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+  } else {
+    response = await fetch(`/api/conversations/${conversationId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content, conversation: conversationId }),
+    });
+  }
   if (!response.ok) {
     throw new Error('Erro ao enviar mensagem');
   }
