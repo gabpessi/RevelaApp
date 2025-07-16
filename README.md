@@ -1,38 +1,53 @@
-Integrantes: 
-- Reni Rogete Rosa Ferreira Júnior 24104772
-- Gabriel Pessi Buchweitz          24102978
-- Tito Luiz Pereira                24100918
-- Vitor Andrade Schweitzer         24100913
-  
-O trabalho prático (PW) será montado como um espaço digital chamado "Revela – Rede Social para Fotógrafos" onde fotógrafos possam divulgar seus trabalhos, interagir com outros usuários e explorar novas imagens. A plataforma permitirá o compartilhamento de fotografias em alta qualidade, que podem ser vista em um feed de postagens. 
+# Revela – Rede Social para Fotógrafos (Forked)
 
-# Links importantes:
-	- Repositório GitHub:
-	  https://github.com/VitorAndradeSchweitzer/DesenvolvimentoWeb.git
-   
-	- Aplicação hospedada (24/7):
-	  https://desenvolvimento-web-sable.vercel.app/
+Este repositório é um fork do projeto original [Revela](https://github.com/VitorAndradeSchweitzer/DesenvolvimentoWeb.git), uma rede social para fotógrafos que permite divulgar trabalhos, interagir com outros usuários e explorar imagens em alta qualidade.
 
-# Tecnologias Utilizadas:
-	- Front-end: React, Vite, CSS Modules
-	- Back-end: Django, Django REST Framework
-	- Banco de Dados: PostgreSql
-	- Hospedagem: Vercel (front-end)
+---
 
-Requisitos de Aplicação WEB:
-# Cadastro, autenticação de usuários e atualização:
-	- O sistema permitirá que novos usuários se cadastrem com e-mail e senha.
-	- A autenticação será obrigatória para acessar a plataforma.
-	- O usuário poderá atualizar seu cadastro continuamente.
+## Sobre o projeto original
 
-# Base de Dados: 
-	- Todas as informações dos usuários e fotos serão armazenadas em um banco de dados no back-end.
+O "Revela" é uma plataforma web onde fotógrafos podem compartilhar fotografias em alta qualidade em um feed de postagens, trocar mensagens privadas e gerenciar seu perfil. A aplicação oferece:
 
-# Compartilhamento de dados:
-	- Troca de mensagens e imagens privadas.
+- Cadastro, autenticação e atualização de usuários
+- Compartilhamento de mensagens e imagens privadas
+- Banco de dados PostgreSQL para armazenamento
+- Hospedagem front-end na Vercel garantindo disponibilidade 24/7
+- Interface responsiva para diferentes dispositivos
 
-# Disponibilidade:
-	- A plataforma será hospedada para garantir acesso 24/7.
+---
 
-# Responsividade:
-	- A interface será adaptável a diferentes tamanhos de tela.
+## Minha participação
+
+Atuei no desenvolvimento do front-end, com responsabilidades em:
+
+- Desenvolvimento das telas: login, cadastro, criação de post, feed de postagens e mensagens
+- Implementação das funcionalidades associadas a essas telas
+- Criação do design completo da interface, garantindo usabilidade e responsividade
+
+---
+
+## Tecnologias Utilizadas
+
+- **Front-end:** React, Vite, CSS Modules  
+- **Back-end:** Django, Django REST Framework  
+- **Banco de Dados:** PostgreSQL  
+- **Hospedagem:** Vercel (front-end)
+
+---
+
+## Projeto Online
+
+Você pode acessar a aplicação em funcionamento no link abaixo:
+
+[https://desenvolvimento-web-sable.vercel.app/](https://desenvolvimento-web-sable.vercel.app/)
+
+---
+
+## Repositório Original
+
+O código-fonte original está disponível em:
+
+[https://github.com/VitorAndradeSchweitzer/DesenvolvimentoWeb.git](https://github.com/VitorAndradeSchweitzer/DesenvolvimentoWeb.git)
+
+---
+
